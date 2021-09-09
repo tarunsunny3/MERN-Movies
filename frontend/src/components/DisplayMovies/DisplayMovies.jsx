@@ -47,8 +47,10 @@ const DisplayMovies = () => {
             //There is some error
             if(err[0]=='I'){
                 setError("Please enter some text and then try again");
-            }else{
+            }else if(err[0]=='T'){
                 setError("The entered text is too short to get results");
+            }else{
+                setError("Couldn't find any results");
             }
             // setError(res.data.Error);
         }else{
