@@ -43,8 +43,14 @@ const DisplayMovies = () => {
         const data = res.data;
         // console.log("Param is ", param, data);
         if(data.Response === "False"){
+            let err = res.data.Error;
             //There is some error
-            setError(res.data.Error);
+            if(err[0]=='I'){
+                setError("Please enter some text and then try again");
+            }else{
+                setError("The entered text is too short to get results");
+            }
+            // setError(res.data.Error);
         }else{
             setError(null);
             setSearchResults(data.Search);
@@ -85,7 +91,7 @@ const DisplayMovies = () => {
       {
           error === null ?
           <div>
-              <Grid container spacing={4} display="flex" justifyContent="center">
+              <Grid container spacing={4} display="flex" justifyContent="space-around">
                 {
                     searchResults.map((item, key)=>(
                         <Grid key={key} item xs={12} sm={6} md={4}>
@@ -96,7 +102,7 @@ const DisplayMovies = () => {
             </Grid>
           {
               (totalResCount / 10) > 1 && 
-              <div style={{backgroundColor: "white", marginTop: "5%", marginBottom: "3%", display: "flex", justifyContent: "center"}}>
+              <div style={{backgroundColor: "white", marginTop: "5%", display: "flex", justifyContent: "center"}}>
               <Pagination  showFirstButton showLastButton color="primary" count={Number(Math.ceil(totalResCount / 10))} page={Number(currPage)} onChange={(event: React.ChangeEvent<unknown>, value: number)=>handlePageChange(Number(value))} />
               </div>
           }
@@ -104,7 +110,7 @@ const DisplayMovies = () => {
          </div>
 
          :
-         <p>Error is {error}</p>
+         <p style={{color: "red", fontSize: "2rem"}}>{error}</p>
       }
       
         </div>

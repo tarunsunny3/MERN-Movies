@@ -13,6 +13,7 @@ const ShowFavorites = () => {
     const moviesPerPage = 5;
     useEffect(() => {
         const fetchFavorites = async  ()=>{
+            setLoading(true);
             let favs = user.favoriteMovies;
             if(favs === undefined) {
                 // console.log("YESSS");
@@ -27,7 +28,7 @@ const ShowFavorites = () => {
             }));
             setResults(tempResults);
         }
-        setLoading(true);
+        
         fetchFavorites();
         setLoading(false);
     }, [user]);
@@ -36,7 +37,7 @@ const ShowFavorites = () => {
     }
     if(user.favoriteMovies === undefined || user.favoriteMovies.length === 0){
         
-        return <p>No Favorite movies/series available</p>;
+        return <p style={{fontSize: "2rem", color: "red"}}>No Favorite movies/series available</p>;
     }
     const indexOfLastMovie = currPage * moviesPerPage;
     const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
@@ -52,7 +53,7 @@ const ShowFavorites = () => {
         <div style={{width: "85vw", marginTop: "5%"}}>
             {
                 loading && 
-                <p> Loading...</p>
+                <p style={{fontSize: "4rem"}}> Loading...</p>
             }
            <Grid style={{marginLeft: "2%"}} container spacing={4} display="flex" justifyContent="center">
                 {
