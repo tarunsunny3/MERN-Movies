@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import axios from 'axios';
 import AppContext from '../../src/AppContext';
 import { makeStyles } from '@material-ui/core/styles';
@@ -179,11 +179,11 @@ const  NavBar = (props)=> {
     <div id="navbar" className={classes.root}>
       <AppBar className={classes.appbar} position="static" elevation={0}>
         <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-        <img onClick={()=>window.location.href = "/"}  style={{ cursor: "pointer", height: window.innerHeight/11}} alt={"app logo"} src={process.env.PUBLIC_URL +"/logo192.png"}/>
+        <Typography onClick={()=>history.push("/")} variant="h6" className={classes.title}>
+        <img style={{ cursor: "pointer", height: window.innerHeight/11}} alt={"app logo"} src={process.env.PUBLIC_URL +"/logo192.png"}/>
         
           </Typography>
-          <Typography onClick={()=>window.location.href = "/"}  className={classes.title1} variant="h6" >
+          <Typography onClick={()=>history.push("/")} className={classes.title1} variant="h6" >
             Tmovies
           </Typography>
            

@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import { useHistory } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -66,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register() {
+  const history = useHistory();
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -171,9 +173,9 @@ export default function Register() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
+            <Link style={{cursor: "pointer"}} onClick={()=>history.push("/login")} variant="body2">
+                  {"Already have an account? Sign in"}
+                </Link>
             </Grid>
           </Grid>
         </form>
