@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import API from '../apiURL';
 import AppContext from '../AppContext';
@@ -12,21 +12,25 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-
+import { IconButton, Tooltip } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 const useStyles = makeStyles((theme)=>({
     root: {
       maxWidth: 345,
+      borderRadius: "1rem",
+      boxShadow: "5px 10px #888888"
     },
     media: {
         maxWidth: "100%",
         height: 200,
-        backgroundSize: "cover"
+        // objectFit: "contain",
+        backgroundSize: "90% 100%"
     },
     fav:{
         color: '#444444',
-        fontSize: '1.5rem',
-        float: "right",
-        padding: "3px"
+        fontSize: '1.8rem',
+        // float: "right",
+        // padding: "3px"
     },
     favChecked:{
         color: "#FF0000"
@@ -60,22 +64,32 @@ const useStyles = makeStyles((theme)=>({
 const MovieCard = ({movie, favorite}) => {
     const {user, setLoggedIn, loggedIn} = React.useContext(AppContext);
     const classes = useStyles();
+    const [isFav, setIsFav] = useState(false);
     // const history = useHistory();
     const [detailedMovie, setDetailedMovie] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
+    useEffect(() => {
+      if(user && user.favoriteMovies && user.favoriteMovies.includes(movie.imdbID)){
+        setIsFav(true);
+      }else{
+        setIsFav(false);
+      }
+    }, [user])
     const handleFavIcon = async (e, imdbID)=>{
         const classList = e.target.classList;
         if(classList.contains(classes.favChecked)){
             classList.remove(classes.favChecked);
-            const res = await axios.post('/api/removeFav', {imdbID});
+            await axios.post('/api/removeFav', {imdbID});
             setLoggedIn(!loggedIn);
-            // console.log(res.data);
         }else{
-            const res = await axios.post('/api/addFav', {imdbID});
+            await axios.post('/api/addFav', {imdbID});
             setLoggedIn(!loggedIn);
-            // console.log(res.data);
             classList.add(classes.favChecked);
         }
+    }
+    const handleDeleteFav = async (imdbID)=>{
+      await axios.post('/api/removeFav', {imdbID});
+      setLoggedIn(!loggedIn);
     }
     const handleMore = async (imdbID)=>{
         setModalOpen(true);
@@ -86,7 +100,7 @@ const MovieCard = ({movie, favorite}) => {
     const modalBody = (
         <Card className={classes.expandedCard}>
       
-        <CardActionArea>
+        <CardActionArea >
       <CardMedia
           className={classes.modalMedia}
           src={process.env.PUBLIC_URL + "/logo192.png"}
@@ -103,8 +117,12 @@ const MovieCard = ({movie, favorite}) => {
     {
         favorite === undefined && 
         <Typography gutterBottom variant="h5" component="h2">
-        <span><i  onClick={(e)=>handleFavIcon(e, detailedMovie.imdbID)} className={`fas fa-heart ${classes.fav}`}></i></span>
-          {detailedMovie.Title}
+          
+        <IconButton style={{float: "right"}}>
+          
+        <span><i  onClick={(e)=>handleFavIcon(e, detailedMovie.imdbID)} className={isFav ? `fas fa-heart ${classes.fav} ${classes.favChecked}`: `fas fa-heart ${classes.fav}` }></i></span>
+        </IconButton>
+         {detailedMovie.Title}
   
         </Typography>
     }
@@ -158,7 +176,31 @@ const MovieCard = ({movie, favorite}) => {
         <>
             <Card className={classes.root}>
       
-            <CardActionArea>
+            
+              
+                <div style={{display: "flex", backgroundColor: "#F7DBF0", justifyContent: "space-between", alignItems: "center"}}>
+                 <p style={{fontSize: "1.5rem", marginLeft: "2%"}}> {movie.Type.charAt(0).toUpperCase() + movie.Type.slice(1)}</p>
+                 {
+                   favorite === undefined?
+                 
+                  <div>
+                    <Tooltip title={isFav ? "Remove from favorite?" : "Add to favorites?"}>
+                  <IconButton>
+          <span><i  onClick={(e)=>handleFavIcon(e, movie.imdbID)} className={isFav ? `fas fa-heart ${classes.fav} ${classes.favChecked}`: `fas fa-heart ${classes.fav}` }></i></span>
+           </IconButton>
+           </Tooltip>
+           </div>
+           :
+           <div>
+             <Tooltip title="Remove from favorites?" placement="right">
+           <IconButton onClick={()=>handleDeleteFav(movie.imdbID)}>
+                  <DeleteIcon />
+    </IconButton>
+    </Tooltip>
+    </div>
+}
+                </div>
+<CardActionArea onClick={()=>handleMore(movie.imdbID)}>
         <CardMedia
           className={classes.media}
           image={movie.Poster==="N/A" ? (process.env.PUBLIC_URL + "/logo192.png") : movie.Poster}
@@ -169,22 +211,29 @@ const MovieCard = ({movie, favorite}) => {
         <CardContent>
         
           <Typography gutterBottom variant="h5" component="h2">
-          <span><i  onClick={(e)=>handleFavIcon(e, movie.imdbID)} className={user && user.favoriteMovies.includes(movie.imdbID)? `fas fa-heart ${classes.fav} ${classes.favChecked}`: `fas fa-heart ${classes.fav}` }></i></span>
+          {/* <IconButton style={{float: "right"}}>
+          <span><i  onClick={(e)=>handleFavIcon(e, movie.imdbID)} className={user && user.favoriteMovies && user.favoriteMovies.includes(movie.imdbID)? `fas fa-heart ${classes.fav} ${classes.favChecked}`: `fas fa-heart ${classes.fav}` }></i></span>
+           </IconButton> */}
             {movie.Title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             Year: {movie.Year}
            
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          {/* <Typography variant="body2" color="textSecondary" component="p">
           Type: {movie.Type} 
-          </Typography>
+          </Typography> */}
         </CardContent>
     
-      <CardActions>
-        <Button  variant="contained" color="secondary" onClick={()=>handleMore(movie.imdbID)} color="primary">
+      <CardActions style={{ justifyContent: "space-between"}}>
+        <Button  variant="contained" color="secondary" onClick={()=>handleMore(movie.imdbID)} >
           More
         </Button>
+        {/* <div style={{float: "right"}}>
+        <IconButton >
+          <DeleteIcon style={{color: "pink", fontSize: '2rem'}}/>
+        </IconButton>
+        </div> */}
       </CardActions>
     </Card>
     <div className={classes.modalDiv}>

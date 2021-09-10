@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import API from '../../apiURL';
+import {Helmet} from 'react-helmet';
+import './DisplayMovies.css';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
@@ -8,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Pagination from '@material-ui/lab/Pagination';
 import MovieCard from '../MovieCard';
 import Grid from '@material-ui/core/Grid';
+import { Link as Scroll } from 'react-scroll';
 const StyledInput = withStyles({
     root: {
       '& fieldset': {
@@ -18,9 +21,7 @@ const StyledInput = withStyles({
           borderLeftWidth: 7,
           padding: '4px !important', // override inline-style
       },
-      
     },
-  
   })(TextField);
 const DisplayMovies = () => {
     const [search, setSearch] = useState("avengers");
@@ -64,8 +65,13 @@ const DisplayMovies = () => {
     }, [])
     return (
         <div style={{marginLeft: "2%"}}>
+            <Helmet>
+                <title>Search Movies</title>
+                <meta name="description" content="Search for movies, series from Tmovies" />
+            </Helmet>
             <div style={{marginTop: "5px", marginLeft: "4px", width: "100%"}}>
         <StyledInput 
+        InputProps={{style: {color: "white"}}}
         style={{width: "80%"}}
         color="primary"
         placeholder="Search for movies, series"
@@ -81,13 +87,13 @@ const DisplayMovies = () => {
         inputProps={{ 'aria-label': 'search' }}
         onKeyPress={(key)=>{
           if(key.code==='Enter'){
-            fetchMovies();
+            fetchMovies(search);
           }
         }}>
           
         </StyledInput>
-        <IconButton onClick={()=>fetchMovies()} type="submit" aria-label="search">
-        <SearchIcon />
+        <IconButton onClick={()=>fetchMovies(search)} type="submit" aria-label="search">
+        <SearchIcon style={{color: "white"}} />
       </IconButton>
       </div>
       {
@@ -104,15 +110,20 @@ const DisplayMovies = () => {
             </Grid>
           {
               (totalResCount / 10) > 1 && 
-              <div style={{backgroundColor: "white", marginTop: "5%", display: "flex", justifyContent: "center"}}>
-              <Pagination  showFirstButton showLastButton color="primary" count={Number(Math.ceil(totalResCount / 10))} page={Number(currPage)} onChange={(event: React.ChangeEvent<unknown>, value: number)=>handlePageChange(Number(value))} />
+              <div style={{ marginTop: "5%", marginBottom: "2%", display: "flex", justifyContent: "center"}}>
+                  <Scroll to="navbar" smooth={true}>
+              <Pagination style={{backgroundColor: "white", paddingTop: "2%", paddingBottom: "2%"}} showFirstButton showLastButton color="primary" count={Number(Math.ceil(totalResCount / 10))} page={Number(currPage)} onChange={(event: React.ChangeEvent<unknown>, value: number)=>handlePageChange(Number(value))} />
+              </Scroll>
               </div>
           }
           
          </div>
 
          :
-         <p style={{color: "red", fontSize: "2rem"}}>{error}</p>
+         <div style={{ backgroundColor: "white", width: "max-content", padding: "2%"}}>
+              <p className="error">{error}</p>
+         </div>
+        
       }
       
         </div>

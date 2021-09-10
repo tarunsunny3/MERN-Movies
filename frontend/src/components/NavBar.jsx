@@ -16,7 +16,7 @@ import SortIcon from '@material-ui/icons/Sort';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   appbar:{
     background: 'white',
@@ -24,7 +24,14 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginTop: "1%",
     marginLeft: "-1%",
+    // flexGrow: 1,
+  },
+  title1: {
     flexGrow: 1,
+    marginLeft: '1%',
+    cursor: "pointer",
+    fontFamily: "Pacifico, cursive, serif",
+    color: "#C490E4"
   },
   headerItems:{
     display: "flex",
@@ -167,29 +174,18 @@ const  NavBar = (props)=> {
     }
     </Menu>
   );
-  // const menuId = 'primary-search-account-menu';
-  // const renderMenu = (
-  //   <Menu
-  //     anchorEl={anchorEl}
-  //     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-  //     id={menuId}
-  //     keepMounted
-  //     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-  //     open={isMenuOpen}
-  //     onClose={handleMenuClose}
-  //   >
-  //     <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-  //     <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-  //   </Menu>
-  // );
+  
   return (
-    <div className={classes.root}>
+    <div id="navbar" className={classes.root}>
       <AppBar className={classes.appbar} position="static" elevation={0}>
         <Toolbar>
         <Typography variant="h6" className={classes.title}>
-        <img onClick={()=>window.location.href = "/"}  style={{ cursor: "pointer", height: window.innerHeight/11}} src={process.env.PUBLIC_URL +"/logo192.png"}/>
+        <img onClick={()=>window.location.href = "/"}  style={{ cursor: "pointer", height: window.innerHeight/11}} alt={"app logo"} src={process.env.PUBLIC_URL +"/logo192.png"}/>
+        
           </Typography>
-         
+          <Typography onClick={()=>window.location.href = "/"}  className={classes.title1} variant="h6" >
+            Tmovies
+          </Typography>
            
             
             <div>

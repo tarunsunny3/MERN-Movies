@@ -6,7 +6,7 @@ const HomePage = () => {
         <div className="bg">
             <div>
                 <div className="header">
-                    <Typography variant="h3" style={{textAlign: "center"}}>  Welcome to Movies App </Typography>
+                    <Typography variant="h3" style={{fontFamily: "Pacifico, cursive", textAlign: "center"}}>  Welcome to Movies App </Typography>
                 </div>
             </div>
         </div>
