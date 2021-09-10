@@ -16,6 +16,6 @@ If you want to run this app on your local system create a config folder at root 
 
 ## Tools/libraries used:
 
-Material-UI is used for all the stylings used in this app
-React-HELMET is used to add titles and meta tags for the needed routes
-React-scroll is used to scroll to the specified location
+* Material-UI is used for all the stylings used in this app
+* React-HELMET is used to add titles and meta tags for the needed routes
+* React-scroll is used to scroll to the specified location
