@@ -2,7 +2,7 @@
 
 # Made using MongoDB, ExpressJs, ReactJs, Material-ui(styling), Nodejs
 
-App link: https://m
+App link: https://mern-movies-api-app.herokuapp.com/
 
 API Used: https://omdbapi.com/
 
