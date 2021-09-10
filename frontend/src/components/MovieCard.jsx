@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme)=>({
         fontSize: "3rem",
     }
 }));
-const MovieCard = ({movie, favorite}) => {
+const MovieCard = ({movieKey, movie, favorite}) => {
     const {user, setLoggedIn, loggedIn} = React.useContext(AppContext);
     const classes = useStyles();
     const [isFav, setIsFav] = useState(false);
@@ -167,7 +167,7 @@ const MovieCard = ({movie, favorite}) => {
   </Card>
     );
     return (
-        <div>
+        <div key={movieKey}>
         {
             user === undefined || user.favoriteMovies === undefined
             ?

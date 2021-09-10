@@ -102,8 +102,8 @@ const DisplayMovies = () => {
               <Grid container spacing={4} display="flex" justifyContent="space-around">
                 {
                     searchResults.map((item, key)=>(
-                        <Grid key={key} item xs={12} sm={6} md={4}>
-                            <MovieCard  movie={item} />
+                        <Grid key={(key+currPage)*Math.random()} item xs={12} sm={6} md={4}>
+                            <MovieCard movieKey={key} movie={item} />
                         </Grid>
                     ))
                 }
