@@ -1,6 +1,6 @@
 # MERN-Movies-APP
 
-# Made using MongoDB, ExpressJs, ReactJs, Material-ui(styling), Nodejs
+# Made using MongoDB, ExpressJS, ReactJS, Material-ui(styling), NodeJS
 
 App link: https://mern-movies-api-app.herokuapp.com/
 
